@@ -11,7 +11,6 @@
             margin: 0; 
             background-color: #fff;
         }
-        /* --- मेन ग्रिड --- */
         .wallpaper-grid {
             column-count: 5;
             column-gap: 15px;
@@ -29,12 +28,10 @@
             cursor: pointer;
             display: block;
         }
-        /* Responsive Grid */
         @media (max-width: 1200px) { .wallpaper-grid { column-count: 4; } }
         @media (max-width: 992px) { .wallpaper-grid { column-count: 3; } }
         @media (max-width: 768px) { .wallpaper-grid { column-count: 2; } }
 
-        /* --- व्यूअर (ओवरले) --- */
         #viewer-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -43,11 +40,12 @@
             display: none;
             justify-content: center;
             align-items: center;
-            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
         }
         .viewer-box {
             background-color: #fff;
-            width: 80%;
+            width: 90%;
             max-width: 1000px;
             max-height: 90vh;
             border-radius: 32px;
@@ -56,76 +54,36 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.3);
             animation: zoomIn 0.3s ease-in-out;
         }
-        @keyframes zoomIn { from { transform: scale(0.9); } to { transform: scale(1); } }
+        @keyframes zoomIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         
-        .viewer-image-section {
-            flex: 1;
-            background-color: #f0f0f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .viewer-image-section img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-        .viewer-details-section {
-            flex: 1;
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-        }
+        .viewer-image-section { flex: 1.5; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center; }
+        .viewer-image-section img { width: 100%; height: 100%; object-fit: contain; }
+        .viewer-details-section { flex: 1; padding: 30px; display: flex; flex-direction: column; overflow-y: auto; }
         #viewer-close-btn {
             position: absolute;
             top: 15px; right: 20px;
-            font-size: 24px; color: #fff;
-            background: rgba(0,0,0,0.3); border-radius: 50%;
+            font-size: 24px; color: #000;
+            background: #fff; border-radius: 50%;
             width: 40px; height: 40px;
             border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
         }
-        .action-bar {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        .action-bar button {
-            background: none; border: none; font-size: 20px;
-            cursor: pointer; color: #555; display: flex;
-            align-items: center; gap: 8px;
-        }
+        .action-bar { display: flex; align-items: center; gap: 20px; margin-bottom: 20px; }
+        .action-bar button, .action-bar span { background: none; border: none; font-size: 20px; cursor: pointer; color: #555; display: flex; align-items: center; gap: 8px; }
         .action-bar .like-btn.liked i { color: red; }
-        .download-main-btn {
-            background-color: #e60023;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 24px;
-            font-weight: bold;
-            font-size: 16px !important;
-            margin-left: auto; /* सबसे दाईं ओर */
-        }
-        .wallpaper-info { flex-grow: 1; }
-        .wallpaper-info h2 { font-size: 24px; margin: 0 0 10px 0; }
-        
-        /* रिलेटेड वॉलपेपर */
+        .download-main-btn { background-color: #e60023; color: white; border: none; padding: 12px 20px; border-radius: 24px; font-weight: bold; font-size: 16px !important; margin-left: auto; }
+        .wallpaper-info { flex-grow: 1; text-align: left; }
+        .wallpaper-info h2 { font-size: 28px; margin: 0 0 10px 0; }
         .related-section { margin-top: 20px; }
-        .related-section h3 { text-align: left; margin-bottom: 15px; }
-        .related-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
+        .related-section h3 { text-align: left; margin-bottom: 15px; font-size: 16px; color: #555; }
+        .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .related-grid img { width: 100%; border-radius: 8px; cursor: pointer; }
 
-        /* मोबाइल के लिए */
         @media (max-width: 768px) {
-            .viewer-box { flex-direction: column; width: 95%; max-height: 95vh; }
+            .viewer-box { flex-direction: column; width: 100%; max-height: 100%; height: 100%; border-radius: 0;}
             .viewer-image-section { min-height: 300px; }
             .viewer-details-section { padding: 20px; }
+            #viewer-close-btn { top: 10px; right: 10px; }
         }
     </style>
 </head>
@@ -133,8 +91,8 @@
     <div id="wallpaper-grid" class="wallpaper-grid"></div>
 
     <div id="viewer-overlay">
-        <button id="viewer-close-btn"><i class="fa-solid fa-xmark"></i></button>
         <div class="viewer-box">
+             <button id="viewer-close-btn"><i class="fa-solid fa-xmark"></i></button>
             <div class="viewer-image-section">
                 <img id="viewer-image" src="" alt="Wallpaper">
             </div>
@@ -159,6 +117,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // --- वॉलपेपर का डेटा (यह आपकी "डायरी" है) ---
             const wallpaperData = [
                 { id: 'image001', cat: 'krishna' }, { id: 'image002', cat: 'krishna' },
                 { id: 'image003', cat: 'krishna' }, { id: 'image004', cat: 'krishna' },
@@ -220,7 +179,6 @@
                 viewerTitle.textContent = `${item.cat.charAt(0).toUpperCase() + item.cat.slice(1)} Wallpaper`;
                 viewerCategory.textContent = `Category: ${item.cat}`;
 
-                // Like button
                 const likeIcon = likeBtn.querySelector('i');
                 if (likedItems[id]) {
                     likeBtn.classList.add('liked');
@@ -230,10 +188,8 @@
                     likeIcon.className = 'fa-regular fa-heart';
                 }
 
-                // Download count
                 downloadCountEl.textContent = downloadCounts[id] || 0;
 
-                // Related wallpapers
                 relatedGrid.innerHTML = '';
                 const related = wallpaperData.filter(w => w.cat === item.cat && w.id !== id);
                 related.slice(0, 9).forEach(relItem => {
@@ -244,11 +200,11 @@
                 });
             }
 
-            // Event Listeners
             grid.addEventListener('click', (e) => {
                 if (e.target.tagName === 'IMG') {
                     updateViewer(e.target.dataset.id);
                     viewerOverlay.style.display = 'flex';
+                    document.body.style.overflow = 'hidden'; // Stop background scrolling
                 }
             });
 
@@ -258,13 +214,15 @@
                 }
             });
 
-            closeBtn.addEventListener('click', () => {
+            function closeViewer() {
                 viewerOverlay.style.display = 'none';
-            });
-            
+                document.body.style.overflow = 'auto'; // Allow background scrolling again
+            }
+
+            closeBtn.addEventListener('click', closeViewer);
             viewerOverlay.addEventListener('click', (e) => {
                 if (e.target === viewerOverlay) {
-                     viewerOverlay.style.display = 'none';
+                     closeViewer();
                 }
             });
 
@@ -272,7 +230,6 @@
                 const id = viewerImage.dataset.id;
                 const icon = likeBtn.querySelector('i');
                 likeBtn.classList.toggle('liked');
-
                 if (likeBtn.classList.contains('liked')) {
                     likedItems[id] = true;
                     icon.className = 'fa-solid fa-heart';
@@ -290,14 +247,10 @@
 
             downloadBtn.addEventListener('click', () => {
                 const id = viewerImage.dataset.id;
-                
-                // Update download count
                 const count = (downloadCounts[id] || 0) + 1;
                 downloadCounts[id] = count;
                 downloadCountEl.textContent = count;
                 localStorage.setItem('downloadCounts', JSON.stringify(downloadCounts));
-
-                // Trigger download
                 const link = document.createElement('a');
                 link.href = viewerImage.src;
                 link.download = `${id}.jpg`;
