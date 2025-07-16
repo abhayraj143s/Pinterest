@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best God Wallpapers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 0; background-color: #f0f0f0; }
+        h1 { color: #333; text-align: center; margin-top: 20px; margin-bottom: 20px; }
+
+        /* --- मुख्य वॉलपेपर ग्रिड की स्टाइलिंग --- */
+        .wallpaper-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            padding: 10px;
+        }
+        .grid-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .grid-item img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        /* --- वॉलपेपर व्यूअर (जो क्लिक करने पर खुलेगा) --- */
+        #wallpaper-viewer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(20, 20, 20, 0.95);
+            z-index: 1000;
+            display: none; /* शुरुआत में छिपा हुआ */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        #viewer-close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        .viewer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 80vw;
+        }
+        .viewer-action-bar {
+            display: flex;
+            gap: 30px;
+            padding: 15px;
+            background-color: rgba(40, 40, 40, 0.8);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .viewer-action-bar button {
+            background: none; border: none; font-size: 22px; cursor: pointer;
+            color: #ddd; display: flex; align-items: center; gap: 8px;
+        }
+        .viewer-action-bar button:hover { color: white; }
+        .viewer-action-bar .like-btn.liked i { color: red; }
+        
+        #viewer-image {
+            max-width: 100%;
+            max-height: 65vh;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+        #related-wallpapers {
+            width: 100%;
+            margin-top: 30px;
+        }
+        #related-wallpapers h2 {
+            color: white;
+            text-align: left;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #555;
+            padding-bottom: 10px;
+        }
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+        }
+        .related-grid img {
+             width: 100%; border-radius: 6px; cursor: pointer; opacity: 0.8; transition: opacity 0.2s;
+        }
+        .related-grid img:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Best God Wallpapers</h1>
+
+    <!-- यह मुख्य ग्रिड है जहाँ सभी वॉलपेपर दिखेंगे -->
+    <div id="wallpaper-grid" class="wallpaper-grid">
+        <!-- वॉलपेपर यहाँ जावास्क्रिप्ट से डाले जाएंगे -->
+    </div>
+
+    <!-- यह वॉलपेपर व्यूअर है, जो शुरुआत में छिपा रहेगा -->
+    <div id="wallpaper-viewer">
+        <button id="viewer-close-btn">×</button>
+        <div class="viewer-content">
+            <div id="viewer-action-bar" class="viewer-action-bar">
+                <!-- एक्शन बटन यहाँ जावास्क्रिप्ट से डाले जाएंगे -->
+            </div>
+            <img id="viewer-image" src="" alt="Full size wallpaper">
+            <div id="related-wallpapers">
+                <h2>Related Wallpapers</h2>
+                <div id="related-grid" class="related-grid">
+                    <!-- मिलते-जुलते वॉलपेपर यहाँ डाले जाएंगे -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const wallpaperData = [
+                { id: 'image001', cat: 'krishna' }, { id: 'image002', cat: 'krishna' },
+                { id: 'image003', cat: 'krishna' }, { id: 'image004', cat: 'krishna' },
+                { id: 'image005', cat: 'krishna' }, { id: 'image006', cat: 'krishna' },
+                { id: 'image007', cat: 'krishna' }, { id: 'image008', cat: 'krishna' },
+                { id: 'image009', cat: 'krishna' }, { id: 'image010', cat: 'krishna' },
+                { id: 'image011', cat: 'shiv' }, { id: 'image012', cat: 'shiv' },
+                { id: 'image013', cat: 'shiv' }, { id: 'image014', cat: 'shiv' },
+                { id: 'image015', cat: 'shiv' }, { id: 'image016', cat: 'shiv' },
+                { id: 'image017', cat: 'shiv' }, { id: 'image018', cat: 'shiv' },
+                { id: 'image019', cat: 'shiv' }, { id: 'image020', cat: 'shiv' },
+                { id: 'image021', cat: 'ganesh' }, { id: 'image022', cat: 'ganesh' },
+                { id: 'image023', cat: 'ganesh' }, { id: 'image024', cat: 'ganesh' },
+                { id: 'image025', cat: 'ganesh' }, { id: 'image026', cat: 'hanuman' },
+                { id: 'image027', cat: 'hanuman' }, { id: 'image028', cat: 'hanuman' },
+                { id: 'image029', cat: 'hanuman' }, { id: 'image030', cat: 'hanuman' },
+                { id: 'image031', cat: 'all-god' }, { id: 'image032', cat: 'all-god' },
+                { id: 'image033', cat: 'all-god' }, { id: 'image034', cat: 'all-god' },
+                { id: 'image035', cat: 'all-god' }, { id: 'image036', cat: 'all-god' },
+                { id: 'image037', cat: 'all-god' }, { id: 'image038', cat: 'all-god' },
+                { id: 'image039', cat: 'all-god' }, { id: 'image040', cat: 'all-god' },
+                { id: 'image041', cat: 'all-god' }, { id: 'image042', cat: 'all-god' },
+                { id: 'image043', cat: 'all-god' }, { id: 'image044', cat: 'all-god' },
+                { id: 'image045', cat: 'all-god' }, { id: 'image046', cat: 'all-god' },
+                { id: 'image047', cat: 'all-god' }, { id: 'image048', cat: 'all-god' },
+                { id: 'image049', cat: 'all-god' }, { id: 'image050', cat: 'all-god' }
+            ];
+
+            const grid = document.getElementById('wallpaper-grid');
+            const viewer = document.getElementById('wallpaper-viewer');
+            const viewerImage = document.getElementById('viewer-image');
+            const viewerActionBar = document.getElementById('viewer-action-bar');
+            const relatedGrid = document.getElementById('related-grid');
+            const closeBtn = document.getElementById('viewer-close-btn');
+
+            const likedItems = JSON.parse(localStorage.getItem('likedWallpapers')) || {};
+            const downloadCounts = JSON.parse(localStorage.getItem('downloadCounts')) || {};
+
+            // 1. मुख्य ग्रिड को बनाना
+            wallpaperData.forEach(item => {
+                const gridItem = document.createElement('div');
+                gridItem.className = 'grid-item';
+                gridItem.innerHTML = `<img src="${item.id}.jpg" alt="Wallpaper" data-id="${item.id}">`;
+                grid.appendChild(gridItem);
+            });
+
+            // 2. व्यूअर को खोलने का लॉजिक
+            grid.addEventListener('click', function(e) {
+                if (e.target.tagName === 'IMG') {
+                    const wallpaperId = e.target.dataset.id;
+                    populateViewer(wallpaperId);
+                    viewer.style.display = 'flex';
+                }
+            });
+
+            relatedGrid.addEventListener('click', function(e) {
+                if (e.target.tagName === 'IMG') {
+                    const wallpaperId = e.target.dataset.id;
+                    populateViewer(wallpaperId);
+                }
+            });
+            
+            closeBtn.addEventListener('click', () => {
+                viewer.style.display = 'none';
+            });
+
+            // 3. व्यूअर को डेटा से भरने का फंक्शन
+            function populateViewer(id) {
+                const item = wallpaperData.find(w => w.id === id);
+                if (!item) return;
+
+                // बड़ी इमेज सेट करें
+                viewerImage.src = `${item.id}.jpg`;
+                viewerImage.dataset.id = id;
+
+                // एक्शन बटन अपडेट करें
+                const isLiked = likedItems[id];
+                const heartIconClass = isLiked ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
+                const currentDownloadCount = downloadCounts[id] || 0;
+                
+                viewerActionBar.innerHTML = `
+                    <button class="like-btn ${isLiked ? 'liked' : ''}" title="Like"><i class="${heartIconClass}"></i></button>
+                    <button class="share-btn" title="Share"><i class="fa-solid fa-share-nodes"></i></button>
+                    <button class="download-counter-btn" title="Downloads"><i class="fa-solid fa-circle-down"></i><span>${currentDownloadCount}</span></button>
+                    <button class="download-main-btn" title="Download"><i class="fa-solid fa-download"></i></button>
+                `;
+
+                // मिलते-जुलते वॉलपेपर दिखाएँ
+                relatedGrid.innerHTML = '';
+                const relatedItems = wallpaperData.filter(w => w.cat === item.cat && w.id !== id);
+                relatedItems.slice(0, 10).forEach(related => { // सिर्फ 10 दिखाएँ
+                    relatedGrid.innerHTML += `<img src="${related.id}.jpg" alt="Related Wallpaper" data-id="${related.id}">`;
+                });
+            }
+
+            // 4. एक्शन बटन का लॉजिक
+            viewerActionBar.addEventListener('click', async function(e) {
+                const button = e.target.closest('button');
+                if (!button) return;
+
+                const wallpaperId = viewerImage.dataset.id;
+
+                if (button.classList.contains('like-btn')) {
+                    const icon = button.querySelector('i');
+                    const isLiked = button.classList.toggle('liked');
+                    if (isLiked) {
+                        likedItems[wallpaperId] = true;
+                        icon.classList.replace('fa-regular', 'fa-solid');
+                    } else {
+                        delete likedItems[wallpaperId];
+                        icon.classList.replace('fa-solid', 'fa-regular');
+                    }
+                    localStorage.setItem('likedWallpapers', JSON.stringify(likedItems));
+                }
+
+                if (button.classList.contains('share-btn')) {
+                    const pageUrl = window.location.origin + window.location.pathname; // सिर्फ मुख्य लिंक
+                    navigator.clipboard.writeText(pageUrl).then(() => alert('Website Link Copied!'));
+                }
+
+                if (button.classList.contains('download-main-btn')) {
+                    // डाउनलोड काउंट बढ़ाएँ
+                    const currentCount = downloadCounts[wallpaperId] || 0;
+                    downloadCounts[wallpaperId] = currentCount + 1;
+                    localStorage.setItem('downloadCounts', JSON.stringify(downloadCounts));
+                    viewerActionBar.querySelector('.download-counter-btn span').textContent = downloadCounts[wallpaperId];
+
+                    // डाउनलोड शुरू करें
+                    const link = document.createElement('a');
+                    link.href = viewerImage.src;
+                    link.download = `${wallpaperId}.jpg`;
+                    link.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
